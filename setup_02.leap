@@ -1,0 +1,35 @@
+logFile leap.log
+source leaprc.ff99SB
+source leaprc.gaff
+addAtomTypes{{"O3" "O" "sp2"}}
+
+loadamberprep ff/GDP.prep
+loadamberprep ff/GTP.prep
+loadamberparams ff/frcmod.phos
+
+prot=loadpdb 5p21_prot.pdb
+gtp=loadpdb 5p21_gtp.pdb
+mg=loadpdb 5p21_mg.pdb
+
+
+##-- make SYSTEM one
+saveamberparm prot sys_nowat.prmtop sys_nowat.inpcrd
+
+## System 2
+sys=combine { prot gtp mg }
+saveamberparm sys sys_gtp_nowat.prmtop sys_gtp_nowat.inpcrd
+
+##-- IONS
+addions prot Na+ 0
+#addions prot Cl- 0
+
+##-- SOLVATE
+solvatebox prot TIP3PBOX 12
+saveamberparm prot sys_box.prmtop sys_box.inpcrd
+
+addions sys Na+ 0
+#addions sys Cl- 0
+solvatebox sys TIP3PBOX 12
+saveamberparm sys sys_gtp_box.prmtop sys_gtp_box.inpcrd
+
+quit

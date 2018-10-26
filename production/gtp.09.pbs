@@ -1,0 +1,33 @@
+#PBS -S /bin/sh
+#PBS -M hyangl@umich.edu
+###PBS -A bjgrant_flux
+#PBS -A grant_lab
+###PBS -N test
+#PBS -q first
+###PBS -m abe
+#PBS -j oe
+#PBS -o out.$PBS_JOBNAME.log
+###PBS -e err.$PBS_JOBNAME.log
+#PBS -V
+#PBS -l nodes=1:ppn=1:gpus=1,mem=4000mb,walltime=72:00:00
+
+echo Running job name $PBS_JOBNAME with ID $PBS_JOBID on host $PBS_O_HOST
+echo Nodes for run:
+cat $PBS_NODEFILE
+NPROCS=`wc -l < $PBS_NODEFILE`
+echo This job has allocated $NPROCS cores
+echo Working directory is $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR
+echo Time is `date`
+echo Directory is `pwd`
+
+prv=08
+cur=09
+
+AMBER=$AMBERHOME/bin/pmemd.cuda
+MPIRUN=$MPI_HOME/bin/mpirun
+AMBER_ARGS="-O -i dyna_prod.sander -p sys_gtp_box.prmtop -c dyna.$prv.rst -r dyna.$cur.rst -o dyna.$cur.out -x dyna.$cur.traj.nc -e dyna.$cur.mden -inf dyna.$cur.inf -amd dyna.$cur.amdlog"
+
+echo Running cmd: $AMBER $AMBER_ARGS
+$AMBER $AMBER_ARGS
+echo Finished at time: `date`

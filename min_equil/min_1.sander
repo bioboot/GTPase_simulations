@@ -1,0 +1,11 @@
+Minimisation Stage 1: solvent + ions - Holding the solute fixed
+&cntrl
+imin = 1,
+maxcyc = 2000,
+ncyc = 500,
+ntb = 1,
+ntr = 1,
+restraint_wt=500.0,
+restraintmask='!:WAT,Na+,Cl-',
+cut = 10,
+&end

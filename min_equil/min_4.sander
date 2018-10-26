@@ -1,0 +1,8 @@
+Minimisation Stage 4: all atoms - no restraints
+&cntrl
+imin = 1,
+maxcyc = 2000,
+ncyc = 500,
+ntb = 1,
+cut = 10,
+&end
